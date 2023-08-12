@@ -4,8 +4,12 @@ package com.example.Cadastro.de.disciplinas.Services;
 import com.example.Cadastro.de.disciplinas.Exceptions.DisciplinaInvalidaException;
 import com.example.Cadastro.de.disciplinas.Models.Disciplina;
 import com.example.Cadastro.de.disciplinas.Repository.DisciplinaRepository;
+import com.example.Cadastro.de.disciplinas.Repository.FileLoader;
+import com.example.Cadastro.de.disciplinas.Repository.JsonLoader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,7 +24,13 @@ public class DisciplinaService {
     @Autowired
     public DisciplinaService(DisciplinaRepository repositorio){
         this.repositorio = repositorio;
+        FileLoader loader = new JsonLoader();
+        if(repositorio.count() == 0)
+            for(Disciplina d : (List<Disciplina>) loader.loadFile("Disciplinas.Json"))
+                repositorio.save(d);
+
     }
+
 
     public Disciplina adicionarDisciplina(Disciplina d){
         repositorio.save(d);
