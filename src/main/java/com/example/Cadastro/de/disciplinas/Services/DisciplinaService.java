@@ -91,4 +91,10 @@ public class DisciplinaService {
         repositorio.save(getDisciplina(id));
         return getDisciplina(id);
     }
+
+    public Disciplina adicionarLike(long id) throws DisciplinaInvalidaException {
+        getDisciplina(id).adicionarLikes();
+        repositorio.save(getDisciplina(id));
+        return getDisciplina(id);
+    }
 }

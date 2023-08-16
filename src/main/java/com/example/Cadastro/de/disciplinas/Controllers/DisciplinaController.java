@@ -61,4 +61,9 @@ public class DisciplinaController {
         return ResponseEntity.ok(disciplinas.adicionarComentario(id, comentario));
     }
 
+    @PutMapping("/disciplinas/{id}/like")
+    public ResponseEntity<Disciplina> adicionarLikes(@PathVariable("id") long id) throws DisciplinaInvalidaException {
+        return ResponseEntity.ok(disciplinas.adicionarLike(id));
+    }
+
 }

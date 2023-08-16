@@ -3,6 +3,7 @@ package com.example.Cadastro.de.disciplinas.Models;
 import com.example.Cadastro.de.disciplinas.Exceptions.ComentarioInvalidoException;
 import com.example.Cadastro.de.disciplinas.Exceptions.DisciplinaInvalidaException;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
@@ -23,6 +24,7 @@ public class Disciplina implements Comparable<Disciplina>, Serializable {
     @ElementCollection
     private List<Double> notas = new ArrayList<>();
     @OneToMany
+    @JsonIgnoreProperties("disciplina")
     private List<Comentario> comentarios = new ArrayList<>();
     private int likes;
 
@@ -94,6 +96,14 @@ public class Disciplina implements Comparable<Disciplina>, Serializable {
 
     public long getId(){
         return id;
+    }
+
+    public void adicionarLikes(){
+        likes++;
+    }
+
+    public void removerLikes(){
+        likes--;
     }
 
     @Override
