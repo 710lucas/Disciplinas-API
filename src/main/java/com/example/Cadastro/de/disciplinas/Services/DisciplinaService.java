@@ -1,8 +1,11 @@
 package com.example.Cadastro.de.disciplinas.Services;
 
 
+import com.example.Cadastro.de.disciplinas.Exceptions.ComentarioInvalidoException;
 import com.example.Cadastro.de.disciplinas.Exceptions.DisciplinaInvalidaException;
+import com.example.Cadastro.de.disciplinas.Models.Comentario;
 import com.example.Cadastro.de.disciplinas.Models.Disciplina;
+import com.example.Cadastro.de.disciplinas.Repository.ComentarioRepository;
 import com.example.Cadastro.de.disciplinas.Repository.DisciplinaRepository;
 import com.example.Cadastro.de.disciplinas.Repository.FileLoader;
 import com.example.Cadastro.de.disciplinas.Repository.JsonLoader;
@@ -20,14 +23,15 @@ public class DisciplinaService {
 
 
     private DisciplinaRepository repositorio;
-
+    private ComentarioRepository comentarioRepo;
     @Autowired
-    public DisciplinaService(DisciplinaRepository repositorio){
+    public DisciplinaService(DisciplinaRepository repositorio, ComentarioRepository comentarioRepo){
         this.repositorio = repositorio;
         FileLoader loader = new JsonLoader();
         if(repositorio.count() == 0)
             for(Disciplina d : (List<Disciplina>) loader.loadFile("Disciplinas.Json"))
                 repositorio.save(d);
+        this.comentarioRepo = comentarioRepo;
 
     }
 
@@ -79,4 +83,12 @@ public class DisciplinaService {
         return repositorio.findAll();
     }
 
+    public Disciplina adicionarComentario(long id, ComentarioDTO coment) throws DisciplinaInvalidaException, ComentarioInvalidoException {
+        coment.setDisciplina(getDisciplina(id));
+        Comentario comentario = new Comentario(coment.getAutor(), coment.getConteudo(), coment.getDisciplina());
+        comentarioRepo.save(comentario);
+        getDisciplina(id).addComentario(comentario);
+        repositorio.save(getDisciplina(id));
+        return getDisciplina(id);
+    }
 }

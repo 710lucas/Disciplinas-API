@@ -1,8 +1,10 @@
 package com.example.Cadastro.de.disciplinas.Controllers;
 
 import com.example.Cadastro.de.disciplinas.DTOS.DisciplinaDTO;
+import com.example.Cadastro.de.disciplinas.Exceptions.ComentarioInvalidoException;
 import com.example.Cadastro.de.disciplinas.Exceptions.DisciplinaInvalidaException;
 import com.example.Cadastro.de.disciplinas.Models.Disciplina;
+import com.example.Cadastro.de.disciplinas.Services.ComentarioDTO;
 import com.example.Cadastro.de.disciplinas.Services.DisciplinaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -54,5 +56,9 @@ public class DisciplinaController {
         return ResponseEntity.ok(disciplinas.ranking());
     }
 
+    @PutMapping("/disciplinas/{id}/comentario")
+    public ResponseEntity<Disciplina> adicionarComentario(@PathVariable("id") long id, @RequestBody ComentarioDTO comentario) throws ComentarioInvalidoException, DisciplinaInvalidaException {
+        return ResponseEntity.ok(disciplinas.adicionarComentario(id, comentario));
+    }
 
 }

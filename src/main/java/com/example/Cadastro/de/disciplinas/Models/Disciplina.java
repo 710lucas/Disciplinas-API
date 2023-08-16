@@ -2,6 +2,8 @@ package com.example.Cadastro.de.disciplinas.Models;
 
 import com.example.Cadastro.de.disciplinas.Exceptions.ComentarioInvalidoException;
 import com.example.Cadastro.de.disciplinas.Exceptions.DisciplinaInvalidaException;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.io.Serializable;

@@ -1,6 +1,9 @@
 package com.example.Cadastro.de.disciplinas.Models;
 
 import com.example.Cadastro.de.disciplinas.Exceptions.ComentarioInvalidoException;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -14,14 +17,19 @@ public class Comentario implements Serializable {
     private long id;
     private Usuario autor;
     private String conteudo;
+    @ManyToOne
+    @JsonIgnoreProperties("comentarios")
     private Disciplina disciplina;
 
     public Comentario(Usuario autor, String conteudo, Disciplina disciplina) throws ComentarioInvalidoException {
-        if(autor == null || conteudo == null || conteudo.replaceAll(" ", "").equals("") || disciplina == null)
+        if(conteudo == null || conteudo.replaceAll(" ", "").equals("") || disciplina == null)
             throw new ComentarioInvalidoException("O comentario informado é invalido");
-        setAutor(autor);
         setConteudo(conteudo);
         setDisciplina(disciplina);
+    }
+
+    public Comentario(){
+
     }
 
     public void setAutor(Usuario autor) {
